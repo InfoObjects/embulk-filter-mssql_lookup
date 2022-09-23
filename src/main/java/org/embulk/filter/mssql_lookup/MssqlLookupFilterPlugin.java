@@ -11,7 +11,6 @@ import org.embulk.config.Task;
 import org.embulk.config.TaskSource;
 import org.embulk.spi.*;
 import org.embulk.spi.type.Types;
-
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -34,7 +33,7 @@ public class MssqlLookupFilterPlugin
         @Config("database")
         public String getDatabase();
 
-        @Config("tablename")
+        @Config("table")
         public String getTableName();
 
         @Config("username")

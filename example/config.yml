@@ -15,7 +15,7 @@ filters:
   - type: mssql_lookup
     host: infoobjects-ThinkPad-E490
     database: test
-    tablename: countryNew
+    table: countryNew
     username: SA
     password: Mssqlroot95
     mapping_from:
@@ -29,7 +29,7 @@ filters:
   - type: mssql_lookup
     host: infoobjects-ThinkPad-E490
     database: test
-    tablename: countryNew
+    table: countryNew
     username: SA
     password: Mssqlroot95
     mapping_from:
@@ -43,7 +43,7 @@ filters:
   - type: mssql_lookup
     host: infoobjects-ThinkPad-E490
     database: test
-    tablename: countryNew
+    table: countryNew
     username: SA
     password: Mssqlroot95
     mapping_from:
