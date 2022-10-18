@@ -12,6 +12,8 @@ An Embulk filter plugin for Lookup Transformation with MS-SQL database
 ## Configuration
 
 - **mssql_lookup**: Required attributes for the LookUp Filter Plugin -
+    - **filters**:
+        - **type**: Name of lookup type (required)
     - **host**: database host (example `localhost`) (required)
     - **port**: database port (example port for mssql `1433`) (required
     - **database**: database name (required)
