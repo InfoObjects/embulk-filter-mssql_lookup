@@ -1,59 +1,32 @@
 exec:
-  max_threads: 2
+  max_threads: 1
   min_output_tasks: 1
 in:
   type: file
-  path_prefix: /home/infoobjects/Downloads/sample/calendarFloat.csv
+  path_prefix: /home/infoobjects/Downloads/sample/calendarFloat1 (copy).csv
   parser:
     type: csv
     columns:
-      - { name: dim_calendar_key, type: long }
-      - { name: year_number, type: long }
+      - { name: Country_Name, type: string }
       - { name: quarter_number, type: long }
-      - { name: attr_1, type: string }
+
 filters:
   - type: mssql_lookup
+    driver_path: /home/infoobjects/Downloads/sqljdbc_1s1.2.0.0_enu/sqljdbc_11.2/enu/mssql-jdbc-11.2.0.jre8.jar
+    driver_class: com.microsoft.sqlserver.jdbc.SQLServerDriver
     host: infoobjects-ThinkPad-E490
     database: test
-    table: countryNew
+    schemaName: testSchema1
+    table_name: cnew
     username: SA
     password: Mssqlroot95
     mapping_from:
       - quarter_number
-      - attr_1
     mapping_to:
-      - id
-      - country_code
+      - qtr_no
     new_columns:
-      - { name: country_name, type: string }
-  - type: mssql_lookup
-    host: infoobjects-ThinkPad-E490
-    database: test
-    table: countryNew
-    username: SA
-    password: Mssqlroot95
-    mapping_from:
-      - quarter_number
-      - attr_1
-    mapping_to:
-      - id
-      - country_code
-    new_columns:
-      - { name: country_address, type: string }
-  - type: mssql_lookup
-    host: infoobjects-ThinkPad-E490
-    database: test
-    table: countryNew
-    username: SA
-    password: Mssqlroot95
-    mapping_from:
-      - quarter_number
-      - attr_1
-    mapping_to:
-      - id
-      - country_code
-    new_columns:
-      - { name: country_code,type: double}
+      - { name: qtr_name, type: string }
+
 out:
   type: file
   path_prefix: /home/infoobjects/sqlOutput/output.csv

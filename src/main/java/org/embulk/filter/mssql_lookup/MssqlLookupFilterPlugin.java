@@ -1,16 +1,11 @@
 package org.embulk.filter.mssql_lookup;
 
 import com.google.common.base.Optional;
-
 import com.google.common.collect.ImmutableList;
-import org.embulk.config.Config;
-import org.embulk.config.ConfigDefault;
-import org.embulk.config.ConfigDiff;
-import org.embulk.config.ConfigSource;
-import org.embulk.config.Task;
-import org.embulk.config.TaskSource;
+import org.embulk.config.*;
 import org.embulk.spi.*;
 import org.embulk.spi.type.Types;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -33,7 +28,7 @@ public class MssqlLookupFilterPlugin
         @Config("database")
         public String getDatabase();
 
-        @Config("table")
+        @Config("table_name")
         public String getTableName();
 
         @Config("username")
@@ -50,6 +45,18 @@ public class MssqlLookupFilterPlugin
 
         @Config("new_columns")
         public SchemaConfig getNewColumns();
+
+        @Config("driver_path")
+        @ConfigDefault("null")
+        public java.util.Optional<String> getDriverPath();
+
+        @Config("driver_class")
+        @ConfigDefault("null")
+        public Optional<String> getDriverClass();
+
+        @Config("schemaName")
+        @ConfigDefault("null")
+        public Optional<String> getSchemaName();
 
     }
 
@@ -100,7 +107,6 @@ public class MssqlLookupFilterPlugin
         Map<String, List<String>> map = new HashMap<>();
         Connection con = DatabaseConnection.getConnection(task);
         try {
-
             List<String> targetColumns = task.getMappingTo();
             List<String> newColumns = new ArrayList<>();
 
@@ -120,8 +126,12 @@ public class MssqlLookupFilterPlugin
                     columnNeedsToBeFetched += newColumns.get(i);
                 }
             }
-            query += columnNeedsToBeFetched + " from " + task.getTableName();
+            if (task.getSchemaName().isPresent()) {
+                query += columnNeedsToBeFetched + " from " + task.getSchemaName().get() + "." + task.getTableName();
+            }else {
+                query += columnNeedsToBeFetched + " from " + task.getTableName();
 
+            }
             Statement stmt = con.createStatement();
             ResultSet rs = stmt.executeQuery(query);
 
@@ -232,9 +242,7 @@ public class MssqlLookupFilterPlugin
                 }
                 builder.addRecord();
             }
-
         }
-
 
         @Override
         public void finish() {
@@ -343,14 +351,12 @@ public class MssqlLookupFilterPlugin
                         }else{
                             java.sql.Timestamp timestamp = java.sql.Timestamp.valueOf(matchedData);
                             Instant instant = timestamp.toInstant();
-                            //  Timestamp spiTimeStamp = Timestamp.ofInstant(instant);
                             org.embulk.spi.time.Timestamp spiTimeStamp = org.embulk.spi.time.Timestamp.ofInstant(instant);
                             builder.setTimestamp(colNum, spiTimeStamp);
                         }
                     } else {
                         builder.setNull(colNum);
                     }
-
                 }
             }catch (Exception e){
                 e.printStackTrace();
