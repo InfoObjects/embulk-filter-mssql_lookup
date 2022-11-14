@@ -14,10 +14,10 @@ An Embulk filter plugin for Lookup Transformation with MS-SQL database
 - **mssql_lookup**: Required attributes for the LookUp Filter Plugin -
     - **filters**:
         - **type**: Name of lookup type (required)
-    - **driver_path**: /home/infoobjects/Downloads/sqljdbc_1s1.2.0.0_enu/sqljdbc_11.2/enu/mssql-jdbc-11.2.0.jre8.jar
-    - **driver_class**: com.microsoft.sqlserver.jdbc.SQLServerDriver
+    - **driver_path**: driver path of the driver which has been installed in the system
+    - **driver_class**: driver class name
     - **host**: database host (example `localhost`) (required)
-    - **port**: database port (example port for mssql `1433`) (required
+    - **port**: database port (example port for mssql `1433`) (required)
     - **database**: database name (required)
     - **schemaName**: name of schema in database in which table is located
     - **table_name**: table name of your database (required)
