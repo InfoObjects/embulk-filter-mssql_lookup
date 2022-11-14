@@ -92,11 +92,14 @@ Output File generated :-
 ```
 
 ```yaml
- - type: mssql_lookup
+   type: mssql_lookup
+   driver_path: /home/infoobjects/Downloads/sqljdbc_1s1.2.0.0_enu/sqljdbc_11.2/enu/mssql-jdbc-11.2.0.jre8.jar
+   driver_class: com.microsoft.sqlserver.jdbc.SQLServerDriver
    host: localhost
    port: 1433
    database: test
-   tablename: country_details
+   schemaName: testSchema1
+   table_name: country_details
    username: root
    password: root
    mapping_from:
