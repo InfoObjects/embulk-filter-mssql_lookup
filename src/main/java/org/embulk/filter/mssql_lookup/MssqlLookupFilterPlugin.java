@@ -5,20 +5,21 @@ import com.google.common.collect.ImmutableList;
 import org.embulk.config.*;
 import org.embulk.spi.*;
 import org.embulk.spi.type.Types;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class MssqlLookupFilterPlugin
         implements FilterPlugin
 {
+    private static final Logger logger = LoggerFactory.getLogger(MssqlLookupFilterPlugin.class);
+
     public interface PluginTask
             extends Task
     {
@@ -195,7 +196,7 @@ public class MssqlLookupFilterPlugin
                 columnConfigList.add(columnConfig);
             }
 
-            List<String> unmatchedData = new ArrayList<>();
+            Set<String> unmatchedData = new LinkedHashSet<>();
             List<String> keyColumns = task.getMappingFrom();
             while (reader.nextRecord()) {
 
@@ -246,18 +247,18 @@ public class MssqlLookupFilterPlugin
                 }
                 builder.addRecord();
             }
-            System.out.println("Unmatched rows.....");
-            System.out.print("Key column names: ");
+            String info="\n--------------------Unmatched rows.....................\nMapping Key Columns: ";
             for(int i=0;i<keyColumns.size();i++){
-                System.out.print(keyColumns.get(i));
+                info+= keyColumns.get(i);
                 if(i!=keyColumns.size()-1){
-                    System.out.print(",");
+                    info+=",";
                 }
             }
-            System.out.println();
-            for(int i=0;i<unmatchedData.size();i++){
-                System.out.println(unmatchedData.get(i));
+            info+="\n";
+            for(String key: unmatchedData){
+                info+= key+"\n";
             }
+            logger.info(info);
         }
 
         @Override
