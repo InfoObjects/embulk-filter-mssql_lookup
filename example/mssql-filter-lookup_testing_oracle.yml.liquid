@@ -10,25 +10,25 @@ in:
   user: MYUSER
   password: ABCD
   database: DEMO
-  table: database_table
+  table: customer
 filters:
-  - type: mssql_lookup
-    host: localhost
-    port: 433
-    database: test
-    table_name: lookup_table
-    username: root
-    password: 'passsword'
+  - type: sqlserver
+    host: Localhost
+    driver_path: "..path../mssql-jdbc-10.2.0.jre17.jar"
+    username: "user"
+    password: "password"
+    database: "test"
+    table_name: car
     mapping_from:
-    - id
-    - name
+    - car_name
+    - company
     mapping_to:
-    - id
-    - name
+    - model
+    - brand
     new_columns:
-     - { name: pin, type: string }
-     - { name: gender, type: string }
-     - { name: phone_number, type: string }
+     - { name: car_id, type: string }
+     - { name: category, type: string }
+     - { name: fuel_capacity, type: string }
 out:
   type: jdbc
   host: localhost
@@ -38,6 +38,6 @@ out:
   user: MYUSER
   password: ABCD
   database: DEMO
-  table: output_table_1
+  table: output_table
   mode: truncate_insert
 

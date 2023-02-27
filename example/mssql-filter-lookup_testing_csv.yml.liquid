@@ -3,7 +3,7 @@ exec:
   min_output_tasks: 1
 in:
   type: file
-  path_prefix: "..path../database_table.csv"
+  path_prefix: "..path../customer.csv"
   parser:
     charset: UTF-8
     type: csv
@@ -12,30 +12,29 @@ in:
     header_line: true
     columns:
      - { name: id, type: long }
-     - { name: name, type: string }
-     - { name: age, type: string }
+     - { name: customer_name, type: string }
      - { name: address, type: string }
-     - { name: city, type: string }
-     - { name: country, type: string }
-     - { name: salary, type: long }
+     - { name: email, type: string }
+     - { name: car_name, type: string }
+     - { name: company, type: string }
 filters:
-  - type: mssql_lookup
-    host: localhost
-    port: 433
-    database: test
-    table_name: lookup_table
-    username: root
-    password: '1234'
+  - type: sqlserver
+    host: Localhost
+    driver_path: "..path../mssql-jdbc-10.2.0.jre17.jar"
+    username: "user"
+    password: "password"
+    database: "test"
+    table_name: car
     mapping_from:
-    - id
-    - name
+    - car_name
+    - company
     mapping_to:
-    - id
-    - name
+    - model
+    - brand
     new_columns:
-     - { name: pin, type: string }
-     - { name: gender, type: string }
-     - { name: phone_number, type: string }
+     - { name: car_id, type: string }
+     - { name: category, type: string }
+     - { name: fuel_capacity, type: string }
 
 out:
   type: file
