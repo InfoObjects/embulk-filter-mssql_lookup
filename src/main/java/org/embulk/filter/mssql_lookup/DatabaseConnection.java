@@ -63,6 +63,11 @@ public class DatabaseConnection {
                 return mssqlJdbcDriver.get();
             }
 
+        if (driverPath.isPresent()) {
+            logger.info(
+                    "\"driver_path\" is set to load the MsSQL JDBC driver class \"{}\". Adding it to classpath.", className);
+            this.addDriverJarToClasspath(driverPath.get());
+        }
             try {
                 // If the class is found from the ClassLoader of the plugin, that is prioritized the highest.
                 final Class<? extends java.sql.Driver> found = loadJdbcDriverClassForName(className);
@@ -76,15 +81,8 @@ public class DatabaseConnection {
                 return found;
             }
             catch (final ClassNotFoundException ex) {
-                // Pass-through once.
+                //throw new ConfigException("The MsSQL JDBC driver for the class \"" + className + "\" is not found.", ex);
             }
-
-            if (driverPath.isPresent()) {
-                logger.info(
-                        "\"driver_path\" is set to load the MsSQL JDBC driver class \"{}\". Adding it to classpath.", className);
-                this.addDriverJarToClasspath(driverPath.get());
-            }
-            else {
                 final File root = this.findPluginRoot();
                 final File driverLib = new File(root, "default_jdbc_driver");
                 final File[] files = driverLib.listFiles(new FileFilter() {
@@ -105,12 +103,16 @@ public class DatabaseConnection {
                                     + " in \"default_jdbc_driver\" at {}.", className, file.getAbsolutePath());
                     this.addDriverJarToClasspath(file.getAbsolutePath());
                 }
-            }
 
             try {
-                // Retrying to find the class from the ClassLoader of the plugin.
+                // If the class is found from the ClassLoader of the plugin, that is prioritized the highest.
                 final Class<? extends java.sql.Driver> found = loadJdbcDriverClassForName(className);
                 mssqlJdbcDriver.compareAndSet(null, found);
+                if (driverPath.isPresent()) {
+                    logger.warn(
+                            "\"driver_path\" is set while the MsSQL JDBC driver class \"{}\" is found from the PluginClassLoader."
+                                    + " \"driver_path\" is ignored.", className);
+                }
                 return found;
             }
             catch (final ClassNotFoundException ex) {
