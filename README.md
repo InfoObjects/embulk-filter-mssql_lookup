@@ -13,26 +13,26 @@ An Embulk filter plugin for Lookup Transformation with MS-SQL database
 
 - **mssql_lookup**: Required attributes for the LookUp Filter Plugin -
     - **filters**:
-    - **type**: Name of lookup type (required)
-    - **driver_path**: driver path of the driver which has been installed in the system
-    - **driver_class**: driver class name
-    - **host**: database host (example `localhost`) (required)
-    - **port**: database port (example port for mssql `1433`) (required)
-    - **database**: database name (required)
-    - **schemaName**: name of schema in database in which table is located
-    - **table_name**: table name of your database (required)
-    - **username**: username for your database (required)
-    - **password**: password for database (required)
-    - **mapping_from**: (Name of columns to be matched with table 2 columns) (required)
-        - **Name of column-1**: column name-1 from input file
-        - **Name of column-2**: column name-2 from input file etc ...
-    - **mapping_to**:   (Name of columns to be matched with table 1 columns) (required)
-        - **Name of column-1**: column name-1 from input file
-        - **Name of column-2**: column name-2 from input file
-    - **new_columns**:   (New generated column names) (required)
-        - **Name-1,Type-1**: Any Name, Type of the name { name: car_id, type: string }
-        - **Name-2,Type-2**: Any Name, Type of the name { name: category, type: string }
-        - **Name-3,Type-3**: Any Name, Type of the name { name: fuel_capacity, type: string } etc ...
+        - **type**: Name of lookup type (required)
+        - **driver_path**: driver path of the driver which has been installed in the system
+        - **driver_class**: driver class name
+        - **host**: database host (example `localhost`) (required)
+        - **port**: database port (example port for mssql `1433`) (required)
+        - **database**: database name (required)
+        - **schemaName**: name of schema in database in which table is located
+        - **table_name**: table name of your database (required)
+        - **username**: username for your database (required)
+        - **password**: password for database (required)
+        - **mapping_from**: (Name of columns to be matched with table 2 columns) (required)
+            - **Name of column-1**: column name-1 from input file
+            - **Name of column-2**: column name-2 from input file etc ...
+        - **mapping_to**:   (Name of columns to be matched with table 1 columns) (required)
+            - **Name of column-1**: column name-1 from input file
+            - **Name of column-2**: column name-2 from input file
+        - **new_columns**:   (New generated column names) (required)
+            - **Name-1,Type-1**: Any Name, Type of the name { name: car_id, type: string }
+            - **Name-2,Type-2**: Any Name, Type of the name { name: category, type: string }
+            - **Name-3,Type-3**: Any Name, Type of the name { name: fuel_capacity, type: string } etc ...
 ## Example - columns
 
 Customer.csv for table 1 is as follows :-
